@@ -100,6 +100,22 @@ abstract class Repository
     }
 
     /**
+     * Get resources by a where clause
+     * @param  string $column
+     * @param  mixed $value
+     * @param  array $options
+     * @return Boolean
+     */
+    public function getWhereExists($column, $value, array $options = [])
+    {
+        $query = $this->createBaseBuilder($options);
+
+        $query->where($column, $value);
+
+        return $query->exists();
+    }
+
+    /**
      * Get resources by multiple where clauses
      * @param  array  $clauses
      * @param  array $options
@@ -116,6 +132,22 @@ abstract class Repository
     }
 
     /**
+     * Get resources by multiple where clauses
+     * @param  array  $clauses
+     * @param  array $options
+     * @deprecated
+     * @return Boolean
+     */
+    public function getWhereArrayExists(array $clauses, array $options = [])
+    {
+        $query = $this->createBaseBuilder($options);
+
+        $query->where($clauses);
+
+        return $query->exists();
+    }
+
+    /**
      * Get resources where a column value exists in array
      * @param  string $column
      * @param  array  $values
@@ -127,6 +159,40 @@ abstract class Repository
         $query = $this->createBaseBuilder($options);
 
         $query->whereIn($column, $values);
+
+        return $query->get();
+    }
+
+    /**
+     * Get resources where a column value exists in array
+     * @param  string $column
+     * @param  array  $values
+     * @param  array $options
+     * @return Boolean
+     */
+    public function getWhereInExists($column, array $values, array $options = [])
+    {
+        $query = $this->createBaseBuilder($options);
+
+        $query->whereIn($column, $values);
+
+        return $query->exists();
+    }
+
+    /**
+     * Get where group by
+     * @param  [type] $column  [description]
+     * @param  array  $values  [description]
+     * @param  array  $options [description]
+     * @return [type]          [description]
+     */
+    public function getWhereGroupBy(array $clauses, $groupBy, array $options = [])
+    {
+        $query = $this->createBaseBuilder($options);
+
+        $query->where($clauses);
+
+        $query->groupBy($groupBy);
 
         return $query->get();
     }
